@@ -1,0 +1,56 @@
+# Note de reprise IA — site français et documents légaux
+
+Mis à jour le 23 septembre 2026.
+
+## Travail effectué
+
+- Création des routes françaises `/fr`, `/fr/products`, `/fr/vps`, `/fr/storage`, `/fr/network`, `/fr/principles`, `/fr/terms`, `/fr/privacy` et `/fr/imprint`.
+- Traduction des contenus visibles, navigation, pied de page, cartes de forfaits, formulaire de demande VM personnalisée et pages juridiques. Les noms des distributions et les noms des forfaits restent inchangés lorsqu’ils correspondent à des noms propres/catalogue.
+- Ajout de choix Français/English sur l’écran d’entrée, dans l’ordre langue → thème → accord aux Conditions et confirmation de lecture de la notice de confidentialité.
+- L’écran lie les documents dans la langue choisie. Les versions anglaise et française sont acceptées séparément via le cookie `legal_notice_version=<version>:<langue>` ; le choix de langue et le thème sont mémorisés dans des cookies de première partie d’une durée maximale d’un an.
+- Les pages Terms/Privacy en anglais et Conditions/Confidentialité en français sont accessibles avant la confirmation, afin que l’utilisateur puisse les lire.
+- Le sélecteur de langue dans l’en-tête permet de naviguer vers la route correspondante. Si la langue choisie n’a pas encore été acceptée, l’écran d’entrée réapparaît.
+- `AGENTS.md` décrit maintenant les routes bilingues, les cookies, le fonctionnement de l’accord et l’état d’avancement.
+
+## Fichiers principaux
+
+- `components/theme-provider.tsx` : état de langue et du thème, écran d’entrée, cookies d’accord et navigation localisée.
+- `components/header.tsx`, `components/footer.tsx` : sélecteur et navigation bilingues.
+- `app/fr/**` : routes et contenus français.
+- `app/fr/content.ts` : données éditoriales françaises de la page d’accueil, du catalogue et des principes.
+- `components/plan-card.tsx`, `components/custom-vm-builder.tsx` : rendu français des forfaits et demande VM.
+- `app/terms/page.tsx`, `app/privacy/page.tsx` : documents juridiques anglais.
+- `app/fr/terms/page.tsx`, `app/fr/privacy/page.tsx` : traductions françaises des documents juridiques.
+- `app/legal-constants.ts` : version de l’accord. L’incrémenter quand les visiteurs doivent confirmer une nouvelle version des documents.
+- `AGENTS.md` : carte technique, règles de contenu et état du projet.
+
+## Vérifications
+
+Après les dernières modifications, ces commandes ont réussi :
+
+- `npm run lint`
+- `npm run typecheck`
+- `npm run build`
+
+Le build annonce toutes les routes `/fr` ci-dessus. Aucun test visuel navigateur ou parcours utilisateur automatisé n’a été exécuté.
+
+## À faire avant lancement commercial
+
+Les documents restent explicitement des projets. Demander puis vérifier :
+
+1. Identité juridique complète du vendeur : dénomination, forme, adresse, pays, immatriculation et TVA le cas échéant ; droit applicable et juridiction.
+2. Fournisseurs hébergement, CDN/sécurité et messagerie ; rôles, lieux de traitement, garanties de transfert, champs réellement journalisés et durées de conservation configurées.
+3. Contrôles réellement activés en production : TLS/transport, accès administratifs, mises à jour, sauvegardes, gestion des incidents et protections du fournisseur. Le déploiement n’a pas été audité.
+4. Modalités commerciales avant prise de commande : taxes et prix définitifs, renouvellement, résiliation, assistance/disponibilité propres au service et procédure de rétractation consommateur.
+5. Relecture juridique des versions française et anglaise selon le pays du vendeur et les marchés ciblés. Un avoir ne doit jamais remplacer un remboursement ou droit de rétractation obligatoire.
+
+Ne pas présenter les textes actuels comme une garantie contre les litiges. Le code de l’application n’intègre pas d’outil analytique, mais l’hébergeur/CDN peut produire des journaux techniques ; vérifier sa configuration. Les personnes qui envoient un e-mail communiquent volontairement leur adresse et le contenu de leur message.
+
+## Contraintes à préserver
+
+- Les routes anglaises restent sans préfixe (`/`) ; les équivalents français restent sous `/fr`.
+- Les prix restent définis dans `app/content.ts` ; les pages françaises réutilisent ces forfaits avec un affichage français.
+- Préserver les faits réseau : calcul hébergé en France, IP publique basée en Allemagne via tunnel, chemin retour inverse et latence dépendante du réseau.
+- Les ISO personnalisées sont limitées à 3 Go au total combiné. Ne jamais reformuler comme une limite par fichier.
+- Garder les futurs services non commandables et ne pas inventer de disponibilité, mesures, garanties, lieux, certifications ou dates.
+- Mettre à jour `AGENTS.md` lorsque routes, langue, accord légal, cookies, prix ou responsabilités des fichiers changent.
