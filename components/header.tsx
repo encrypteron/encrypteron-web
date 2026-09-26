@@ -32,7 +32,7 @@ export function Header() {
           <span>{t.menu}</span><b aria-hidden="true">⌃</b>
         </button>
       </div>
-      <div className={`mobile-navigation ${menuOpen ? "open" : ""}`} id="mobile-navigation" aria-label="Mobile navigation">
+      <div className={`mobile-navigation ${menuOpen ? "open" : ""}`} id="mobile-navigation" role="navigation" aria-label={language === "fr" ? "Navigation mobile" : "Mobile navigation"}>
         {navigation.map((item) => item.disabled
           ? <span className="mobile-disabled" aria-disabled="true" key={item.label}>{item.label}<small>{t.soon}</small></span>
           : <a href={path(item.href ?? "/")} onClick={() => setMenuOpen(false)} key={item.href}>{labels[item.label] ?? item.label}<b aria-hidden="true">↗</b></a>)}

@@ -22,7 +22,7 @@ Keep all public language specific and supportable. Never add an invented uptime 
 | --- | --- | --- |
 | `/` | Brand home: left-aligned hero, current service overview, network teaser, use cases, principles preview and contact CTA. | `app/page.tsx` |
 | `/products` | Product index only: current service cards and explicitly non-orderable future-service cards. It contains no prices, plans, or configuration controls. | `app/products/page.tsx` |
-| `/vps` | VPS plans, savings/price tags, supported images, BYO ISO guidance and Custom VM email builder. | `app/vps/page.tsx` |
+| `/vps` | VPS plans, savings/price tags, CPU and RAM explanations, supported images, BYO ISO guidance and Custom VM email builder. | `app/vps/page.tsx` |
 | `/storage` | Object Storage plan and concise product details. | `app/storage/page.tsx` |
 | `/network` | Detailed traffic-path diagram, return path and honest latency expectations. | `app/network/page.tsx` |
 | `/principles` | Operating principles and practical explanation. | `app/principles/page.tsx` |
@@ -48,12 +48,12 @@ VPS-specific capabilities such as system images and Custom VM are part of `/vps`
 
 `app/content.ts` is the only source for public commercial content:
 
-- VPS Pulse: €5.95/month including VAT; 2.75 vCPU (275%), 9.5 GB RAM, 64 GB disk, 1 TB monthly traffic. It appears before VPS One and has the yellow outlined `★ STAR` treatment.
-- VPS One: €4/month before 20% VAT, €4.80/month including VAT; 0.5 vCPU (one core limited to 50%), 1.5 GB RAM, 25 GB NVMe M.2, 750 GB monthly traffic.
-- VPS Neo: €7/month before 20% VAT, €8.40/month including VAT; 1.5 vCPU (150% of one core), 4.5 GB RAM, 50 GB NVMe M.2, 1 TB monthly traffic.
-- VPS X: €14/month before 20% VAT, €16.80/month including VAT; 2.5 vCPU (250%), 11.5 GB RAM, 100 GB NVMe M.2, 1.25 TB monthly traffic.
-- VPS Pure: €21/month before 20% VAT, €25.20/month including VAT; 4 vCPU (400%), 21.5 GB RAM, 200 GB NVMe M.2, 1.5 TB monthly traffic.
-- VPS Max: €31/month before 20% VAT, €37.20/month including VAT; 6.5 vCPU (650%), 32.5 GB RAM, 300 GB NVMe M.2, 2 TB monthly traffic.
+- VPS Pulse: €5.95/month including VAT; 2.75 vCPU (275%), 9.5 GiB RAM, 64 GB disk, 1 TB monthly traffic. It appears before VPS One and has the yellow outlined `★ STAR` treatment.
+- VPS One: €4/month before 20% VAT, €4.80/month including VAT; 0.5 vCPU (one core limited to 50%), 1.5 GiB RAM, 25 GB NVMe M.2, 750 GB monthly traffic.
+- VPS Neo: €7/month before 20% VAT, €8.40/month including VAT; 1.5 vCPU (150% of one core), 4.5 GiB RAM, 50 GB NVMe M.2, 1 TB monthly traffic.
+- VPS X: €14/month before 20% VAT, €16.80/month including VAT; 2.5 vCPU (250%), 11.5 GiB RAM, 100 GB NVMe M.2, 1.25 TB monthly traffic.
+- VPS Pure: €21/month before 20% VAT, €25.20/month including VAT; 4 vCPU (400%), 21.5 GiB RAM, 200 GB NVMe M.2, 1.5 TB monthly traffic.
+- VPS Max: €31/month before 20% VAT, €37.20/month including VAT; 6.5 vCPU (650%), 32.5 GiB RAM, 300 GB NVMe M.2, 2 TB monthly traffic.
 - Object Storage 25 GB: €1/month, previously €5; MinIO, NVMe M.2.
 - Object Storage 50 GB: €10/month; MinIO, NVMe M.2.
 - Object Storage 100 GB: €20/month; MinIO, NVMe M.2.
@@ -66,6 +66,10 @@ VPS plan cards show only the final monthly price including VAT; they do not disp
 Use `danger`, `sold out`, `unavailable`, `off`, or `disabled` only for a factual condition. Use `warn` only for a real caveat. VPS Pulse uses `★ STAR`; VPS X uses `RECOMMENDED`; VPS Max uses `BEST VALUE`. Object Storage 25 GB uses `SAVE 80%` and `RECOMMENDED`.
 
 All VPS plans use Proxmox on Intel Xeon E3-1275 v5 with DDR4 ECC and HP EX950 NVMe, and German public IPv4 via tunnel to France-hosted compute. Monthly traffic varies by plan.
+
+The VPS CPU explanation below the plan cards uses each plan's `cpuQuota` in `app/content.ts`. The guest sees a whole number of virtual cores (the quota rounded up), while Proxmox limits total VM CPU time to `cpuQuota × 100%`. For VPS Max, seven virtual cores are visible and the VM has a 650% total CPU-time limit, equivalent to 6.5 fully used cores. Describe the limit as applying to the whole VM, not separately to each visible core.
+
+The VPS RAM explanation uses each plan's `ramGiB` in `app/content.ts`. RAM is allocated in binary units: 1 GiB = 1,024 MiB. VPS Max's 32.5 GiB corresponds to 33,280 MiB configured. Keep GiB/MiB in English and Gio/Mio in French for RAM; disk and traffic units are separate.
 
 
 ## VPS images and Custom VM
@@ -80,6 +84,7 @@ Only list these images unless the product owner changes the offering:
 Multiple custom ISO files are permitted only when their combined size is at most **3 GB**. Always describe it as a combined total, not a per-file allowance. Image availability and custom ISO suitability are confirmed during provisioning.
 
 `components/custom-vm-builder.tsx` is client-side only. It prepares a pre-filled `mailto:` enquiry with CPU, memory, NVMe and image choices; it does not provision a VM or calculate a binding price.
+The Custom VM builder offers 0.5 through 7 vCPU in 0.5 steps and 0.5 through 48 GiB RAM in 0.5 steps. Its NVMe disk choices remain 25, 50, 80, 160, 320, 500, and 1000 GB. The French and English summaries and enquiry emails use the same selected values, with RAM labelled Gio/GiB.
 
 ## Theme, layout, and accessibility
 
@@ -95,6 +100,7 @@ The browser cookies are `theme=dark|light`, `language=en|fr`, and `legal_notice_
 - Preserve the before-paint logic to prevent a color flash. Keep `data-scroll-behavior="smooth"` on the root `<html>` element because smooth scrolling is configured in `app/globals.css` and Next.js uses the attribute to manage route transitions.
 
 Page hero titles are centered on Products, VPS, Storage, Network and Principles; the home hero remains left-aligned. Do not force arbitrary headings to one line: wrapping is expected when a title cannot fit. Mobile layouts stack grids/cards, hide desktop nav, and use the `MENU ^` control in `components/header.tsx` to show the accessible mobile navigation.
+At widths up to 360px, the header hides its separate contact button to leave room for the logo and controls; the mobile menu still includes the email contact link.
 
 Use semantic HTML, visible focus states, keyboard-operable controls, adequate contrast, and `prefers-reduced-motion` support. Keep components responsive from small phones upward.
 
@@ -123,6 +129,8 @@ Use semantic HTML, visible focus states, keyboard-operable controls, adequate co
 | `components/section-heading.tsx` | Reusable eyebrow/title/intro block. |
 | `components/theme-provider.tsx` | Theme state, system-theme fallback, legal acknowledgement entry gate, and cookie persistence. |
 | `components/plan-card.tsx` | Reusable tag-aware plan card. |
+| `components/cpu-explainer.tsx` | Shared English/French VPS explanation of visible virtual cores and total CPU-time limits. |
+| `components/ram-explainer.tsx` | Shared English/French VPS explanation of binary RAM allocation and GiB/MiB conversion. |
 | `components/custom-vm-builder.tsx` | Interactive Custom VM enquiry builder. |
 | `package.json` | Project scripts and dependencies. |
 | `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `next-env.d.ts` | Framework, TypeScript and lint configuration. |
@@ -139,7 +147,7 @@ Use semantic HTML, visible focus states, keyboard-operable controls, adequate co
 - English and French public routes are implemented. The French route set covers the home page, products, VPS, storage, network, principles, privacy, terms, imprint, and translated Wiki guides. Wiki guides provide beginner-oriented SSH, security, backup, storage, deployment, Linux, and troubleshooting walkthroughs.
 - The welcome gate order is language → theme → acknowledgement of the matching language version of the Terms and Privacy Notice. French and English acknowledgements are tracked separately in the version cookie. Terms and Privacy routes remain readable before acknowledgement.
 - The site legal pages are still drafts. Seller identity and jurisdiction, hosting/email providers, actual technical log fields and retention, and deployed security controls remain unverified. Do not remove draft notices or describe controls/collection as final until those facts are supplied and checked.
-- Latest checks after the English/French route implementation: `npm run lint`, `npm run typecheck`, and `npm run build` passed. These checks establish compilation, not legal compliance or deployment security.
+- Latest local checks on 2026-09-26: `npm run lint`, `npm run typecheck`, and `npm run build` passed. A production-server audit covered 22 English/French routes, 34 internal links, and the rendered images; all resolved. These checks establish compilation and route reachability, not legal compliance, deployment security, or visual behavior on a physical device.
 
 ## Commands
 
