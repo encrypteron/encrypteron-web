@@ -9,7 +9,9 @@ Keep all public language specific and supportable. Never add an invented uptime 
 ### Network facts that must remain accurate
 
 - VPS compute is hosted on the France-hosted infrastructure.
+- VPS virtualisation uses Proxmox on an Intel Xeon E3-1275 v5 host with DDR4 ECC memory and HP EX950 NVMe storage; each VPS plan includes 500 GB/month of traffic. Plan-specific vCPU, RAM, and allocated NVMe capacities remain as listed in `app/content.ts`.
 - VPS public IPv4 addresses are Germany-based and provided through a tunnel path.
+- Object Storage uses MinIO, is S3-compatible, and includes 25 GB on NVMe M.2.
 - Do not call VPS physically hosted in Germany.
 - Public traffic follows: client → German public IP → tunnel path → France-hosted VPS; responses use the reverse path.
 - The tunnel introduces an additional hop. Latency depends on client origin, ISP/peering, route and tunnel path; do not publish a fixed latency result without verified data.
@@ -24,10 +26,11 @@ Keep all public language specific and supportable. Never add an invented uptime 
 | `/storage` | Object Storage plan and concise product details. | `app/storage/page.tsx` |
 | `/network` | Detailed traffic-path diagram, return path and honest latency expectations. | `app/network/page.tsx` |
 | `/principles` | Operating principles and practical explanation. | `app/principles/page.tsx` |
+| `/wiki`, `/wiki/[slug]`, `/fr/wiki`, `/fr/wiki/[slug]` | Read-only English and explicitly translated French guide indexes and article pages. | `app/wiki/**`, `app/fr/wiki/**`, `wiki/content.ts` |
 | `/privacy`, `/terms`, `/imprint` | Draft privacy notice, website terms, and imprint/contact details. Confirm all marked business, hosting, retention, and jurisdiction details before commercial launch. | `app/legal-page.tsx`, route pages |
-| `/fr` and `/fr/*` | French-localized equivalents of the public pages, including the privacy notice, terms, imprint, product content, prices, and custom VM email builder. | `app/fr/**` |
+| `/fr` and `/fr/*` | French-localized equivalents of the public pages, including the privacy notice, terms, imprint, product content, prices, custom VM email builder, and Wiki routes only for translated articles. | `app/fr/**` |
 
-`WIKI` intentionally has no route or action. It is displayed as “soon” in the navigation. `ROOT` is also disabled and reserved exclusively for the future control panel. Do not activate either item unless explicitly asked.
+`WIKI` is the public read-only guide index at `/wiki` and `/fr/wiki`; it is active in navigation. `ROOT` remains disabled and reserved exclusively for the future control panel.
 
 ## Current and future catalogue
 
@@ -45,15 +48,25 @@ VPS-specific capabilities such as system images and Custom VM are part of `/vps`
 
 `app/content.ts` is the only source for public commercial content:
 
-- VPS Start: €1.60/month, previously €4.
-- VPS Build: €3.60/month, previously €9.
-- Object Storage: €2/month, previously €5.
+- VPS Pulse: €5.95/month including VAT; 2.75 vCPU (275%), 9.5 GB RAM, 64 GB disk, 1 TB monthly traffic. It appears before VPS One and has the yellow outlined `★ STAR` treatment.
+- VPS One: €4/month before 20% VAT, €4.80/month including VAT; 0.5 vCPU (one core limited to 50%), 1.5 GB RAM, 25 GB NVMe M.2, 750 GB monthly traffic.
+- VPS Neo: €7/month before 20% VAT, €8.40/month including VAT; 1.5 vCPU (150% of one core), 4.5 GB RAM, 50 GB NVMe M.2, 1 TB monthly traffic.
+- VPS X: €14/month before 20% VAT, €16.80/month including VAT; 2.5 vCPU (250%), 11.5 GB RAM, 100 GB NVMe M.2, 1.25 TB monthly traffic.
+- VPS Pure: €21/month before 20% VAT, €25.20/month including VAT; 4 vCPU (400%), 21.5 GB RAM, 200 GB NVMe M.2, 1.5 TB monthly traffic.
+- VPS Max: €31/month before 20% VAT, €37.20/month including VAT; 6.5 vCPU (650%), 32.5 GB RAM, 300 GB NVMe M.2, 2 TB monthly traffic.
+- Object Storage 25 GB: €1/month, previously €5; MinIO, NVMe M.2.
+- Object Storage 50 GB: €10/month; MinIO, NVMe M.2.
+- Object Storage 100 GB: €20/month; MinIO, NVMe M.2.
 
 All price cards are implemented through `components/plan-card.tsx`. Do not duplicate plan markup or prices in route pages.
+VPS plan cards show only the final monthly price including VAT; they do not display a separate before-VAT price line.
 
 `productTagCatalog` in `app/content.ts` controls all display tags. Add or edit a catalog entry, then add its key to a plan/category `tags` array. Available families include savings/off percentages, price dropped/locked, recommended, featured, new, beta, trial, pre-order, coming soon, limited, low availability, sold out, off, disabled, legacy, deprecated, attention, maintenance, unavailable, and danger.
 
-Use `danger`, `sold out`, `unavailable`, `off`, or `disabled` only for a factual condition. Use `warn` only for a real caveat. Current live plan labels are `SAVE 60%`, `PRICE DROPPED`, plus `BEST VALUE` or `RECOMMENDED` where configured.
+Use `danger`, `sold out`, `unavailable`, `off`, or `disabled` only for a factual condition. Use `warn` only for a real caveat. VPS Pulse uses `★ STAR`; VPS X uses `RECOMMENDED`; VPS Max uses `BEST VALUE`. Object Storage 25 GB uses `SAVE 80%` and `RECOMMENDED`.
+
+All VPS plans use Proxmox on Intel Xeon E3-1275 v5 with DDR4 ECC and HP EX950 NVMe, and German public IPv4 via tunnel to France-hosted compute. Monthly traffic varies by plan.
+
 
 ## VPS images and Custom VM
 
@@ -101,8 +114,12 @@ Use semantic HTML, visible focus states, keyboard-operable controls, adequate co
 | `app/legal-page.tsx` and legal route pages | Shared draft legal layout plus Terms, Privacy Notice, and imprint/contact content. |
 | `app/legal-constants.ts` | Current legal acknowledgement version; bump when visitors need to acknowledge changed legal documents. |
 | `app/fr/**` | French route pages, metadata, and translated public content. Keep facts and prices aligned with their English equivalents and this file. |
-| `components/header.tsx` | Desktop/mobile navigation, disabled Wiki/ROOT, theme toggle and email CTAs. |
+| `components/header.tsx` | Desktop/mobile navigation, public Wiki link, disabled ROOT, theme toggle and email CTAs. |
+| `wiki/content.ts` | Reviewed public Wiki articles (temporary static publishing source). |
+| `components/wiki-markdown.tsx`, `components/wiki-search.tsx` | Safe Wiki Markdown renderer with responsive step flows, contextual visual cards, and public index search/filter UI. |
+| `wiki/*.md` | Wiki architecture, security, data model, threat model, and verification guidance. |
 | `components/footer.tsx` | Brand signature and legal navigation. |
+| `assets/encrypteron.png`, `assets/encrypteron-notext.png` | Shared wordmark for the header/footer and square mark for the browser icon, served from `/assets/`. |
 | `components/section-heading.tsx` | Reusable eyebrow/title/intro block. |
 | `components/theme-provider.tsx` | Theme state, system-theme fallback, legal acknowledgement entry gate, and cookie persistence. |
 | `components/plan-card.tsx` | Reusable tag-aware plan card. |
@@ -119,7 +136,7 @@ Use semantic HTML, visible focus states, keyboard-operable controls, adequate co
 
 ## Project status — 2026-09-23
 
-- English and French public routes are implemented. The French route set covers the home page, products, VPS, storage, network, principles, privacy, terms, and imprint.
+- English and French public routes are implemented. The French route set covers the home page, products, VPS, storage, network, principles, privacy, terms, imprint, and translated Wiki guides. Wiki guides provide beginner-oriented SSH, security, backup, storage, deployment, Linux, and troubleshooting walkthroughs.
 - The welcome gate order is language → theme → acknowledgement of the matching language version of the Terms and Privacy Notice. French and English acknowledgements are tracked separately in the version cookie. Terms and Privacy routes remain readable before acknowledgement.
 - The site legal pages are still drafts. Seller identity and jurisdiction, hosting/email providers, actual technical log fields and retention, and deployed security controls remain unverified. Do not remove draft notices or describe controls/collection as final until those facts are supplied and checked.
 - Latest checks after the English/French route implementation: `npm run lint`, `npm run typecheck`, and `npm run build` passed. These checks establish compilation, not legal compliance or deployment security.
@@ -134,4 +151,6 @@ Use semantic HTML, visible focus states, keyboard-operable controls, adequate co
 
 ## Maintenance rule
 
-Update this file in the same change whenever routes, navigation, file ownership, pricing, tags, available images, network behavior, theme behavior, rollback assets, or commands change.
+Update this file in the same change whenever routes, navigation, file ownership, pricing, tags, available images, network behavior, theme behavior, Wiki boundaries, rollback assets, or commands change.
+
+Apply public site changes to the English and French versions in the same change. Keep their content, prices, tags, and layout aligned, with appropriate translation.

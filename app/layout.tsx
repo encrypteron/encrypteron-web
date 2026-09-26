@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 export const metadata: Metadata = {
   title: "Encrypteron — Infrastructure, clearly operated",
   description: "Security-minded VPS, object storage, and tunnelled network infrastructure.",
+  icons: { icon: "/assets/encrypteron-notext.png" },
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

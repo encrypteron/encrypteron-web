@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "./theme-provider";
 
 export function Footer() {
@@ -11,7 +12,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="signature">
         <p>{fr ? "Bien cordialement," : "Best regards,"}</p>
-        <p className="signature-brand"><span className="pink-dot" /> Encrypteron</p>
+        <p className="signature-brand"><Image src="/assets/encrypteron.png" alt="Encrypteron" width={2172} height={724} /></p>
         <p className="signature-tagline">{fr ? "Une infrastructure exploitée en toute clarté." : "Infrastructure, clearly operated."}</p>
         <div className="pink-rule" />
         <a href="mailto:mail@encrypteron.com">mail@encrypteron.com</a>

@@ -1,6 +1,6 @@
 export const frServices = [
-  { code: "CALCUL / 01", title: "Serveurs privés virtuels", body: "Des machines virtuelles hébergées sur notre infrastructure en France, avec des adresses IP allemandes fournies via un tunnel.", items: ["Ressources virtuelles dédiées", "IP allemande via tunnel", "Accompagnement humain"] },
-  { code: "STOCKAGE / 02", title: "Stockage objet", body: "Un stockage objet compatible S3 pour vos ressources, sauvegardes et données applicatives, en complément de vos serveurs.", items: ["API compatible S3", "Tarification simple par capacité", "Adapté aux données applicatives"] },
+  { code: "CALCUL / 01", title: "Serveurs privés virtuels", body: "Des machines virtuelles Proxmox hébergées sur notre infrastructure en France, avec des adresses IP allemandes fournies via un tunnel.", items: ["Virtualisation Proxmox", "IP allemande via tunnel", "Trafic mensuel selon le forfait"] },
+  { code: "STOCKAGE / 02", title: "Stockage objet", body: "Un stockage objet MinIO compatible S3 pour vos ressources, sauvegardes et données applicatives, en complément de vos serveurs.", items: ["Stockage objet MinIO", "API compatible S3", "25 Go NVMe M.2"] },
   { code: "RÉSEAU / 03", title: "Options réseau", body: "Un chemin réseau par tunnel entre les serveurs hébergés en France et les adresses IP publiques allemandes des VPS.", items: ["Calcul hébergé en France", "IP allemande via tunnel", "Adapté à votre besoin"] },
 ];
 
@@ -17,8 +17,8 @@ export const frPrinciples = [
 ];
 
 export const frProductCategories = [
-  { href: "/fr/vps", number: "01", title: "Serveurs privés virtuels", description: "Forfaits VPS, systèmes disponibles et configurations personnalisées.", detail: "Découvrir les VPS", tags: ["recommended", "sale", "priceDrop"] },
-  { href: "/fr/storage", number: "02", title: "Stockage objet", description: "Un stockage compatible S3 pour vos ressources et données applicatives.", detail: "Découvrir le stockage", tags: ["sale", "priceDrop"] },
+  { href: "/fr/vps", number: "01", title: "Serveurs privés virtuels", description: "Six forfaits VPS Proxmox, systèmes disponibles et configurations personnalisées.", detail: "Découvrir les VPS", tags: ["recommended"] },
+  { href: "/fr/storage", number: "02", title: "Stockage objet", description: "Un stockage objet MinIO compatible S3 pour vos ressources et données applicatives.", detail: "Découvrir le stockage", tags: [] },
   { href: "/fr/network", number: "03", title: "Chemin réseau", description: "Calcul hébergé en France avec une IP publique allemande via tunnel.", detail: "Voir l’architecture", tags: ["featured"] },
 ];
 

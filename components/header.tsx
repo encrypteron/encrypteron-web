@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { navigation } from "@/app/content";
 import { useState } from "react";
 import { useTheme } from "./theme-provider";
@@ -9,12 +10,12 @@ export function Header() {
   const { theme, setTheme, language, setLanguage } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const nextTheme = theme === "dark" ? "light" : "dark";
-  const t = language === "fr" ? { products: "Offres", network: "Réseau", principles: "Principes", soon: "bientôt", enquire: "Contact", menu: "MENU", email: "Contact par e-mail", switch: "Langue", root: "bientôt", theme: `Passer au thème ${nextTheme === "light" ? "clair" : "sombre"}` } : { products: "Products", network: "Network", principles: "Principles", soon: "soon", enquire: "Enquire", menu: "MENU", email: "Email enquiry", switch: "Language", root: "coming soon", theme: `Switch to ${nextTheme} theme` };
+  const t = language === "fr" ? { products: "Offres", network: "Réseau", principles: "Principes", wiki: "Wiki", soon: "bientôt", enquire: "Contact", menu: "MENU", email: "Contact par e-mail", switch: "Langue", root: "bientôt", theme: `Passer au thème ${nextTheme === "light" ? "clair" : "sombre"}` } : { products: "Products", network: "Network", principles: "Principles", wiki: "Wiki", soon: "soon", enquire: "Enquire", menu: "MENU", email: "Email enquiry", switch: "Language", root: "coming soon", theme: `Switch to ${nextTheme} theme` };
   const path = (href: string) => language === "fr" ? `/fr${href === "/" ? "" : href}` : href;
-  const labels: Record<string, string> = { Products: t.products, Network: t.network, Principles: t.principles };
+  const labels: Record<string, string> = { Products: t.products, Network: t.network, Principles: t.principles, Wiki: t.wiki };
   return (
     <header className="site-header">
-      <Link href={path("/")} className="brand" aria-label="Encrypteron"><span className="pink-dot" />ENCRYPTERON</Link>
+      <Link href={path("/")} className="brand" aria-label="Encrypteron"><Image src="/assets/encrypteron.png" alt="Encrypteron" width={2172} height={724} priority /></Link>
       <nav aria-label={language === "fr" ? "Navigation principale" : "Main navigation"}>
         {navigation.map((item) => item.disabled
           ? <span className="nav-coming-soon" aria-disabled="true" key={item.label}>{item.label}<small>{t.soon}</small></span>

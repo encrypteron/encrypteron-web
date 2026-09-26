@@ -31,12 +31,10 @@ export function ThemeProvider({
   const initialPathRef = useRef(pathname);
   const [language, setLanguageState] = useState<Language>(routeLanguage === "fr" ? "fr" : defaultLanguage);
   const [acceptedVersion, setAcceptedVersion] = useState(acceptedLegalNotice);
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (!hasThemeCookie && typeof window !== "undefined") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    return initialTheme;
-  });
+  // Start from the same server-provided value during hydration. The system
+  // preference is applied in an effect after hydration; before-paint CSS still
+  // prevents a flash on the document itself.
+  const [theme, setThemeState] = useState<Theme>(initialTheme);
   const showWelcome = acceptedVersion !== `${LEGAL_ACKNOWLEDGEMENT_VERSION}:${language}`;
 
   useEffect(() => {
@@ -62,6 +60,7 @@ export function ThemeProvider({
     if (hasThemeCookie) return;
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const syncSystemTheme = () => setThemeState(mediaQuery.matches ? "dark" : "light");
+    syncSystemTheme();
     mediaQuery.addEventListener("change", syncSystemTheme);
     return () => mediaQuery.removeEventListener("change", syncSystemTheme);
   }, [hasThemeCookie]);
@@ -85,7 +84,9 @@ export function ThemeProvider({
     if (nextLanguage !== language) setAcknowledged(false);
     setLanguageState(nextLanguage);
     persistLanguage(nextLanguage);
-    const basePath = pathname.replace(/^\/fr(?=\/|$)/, "") || "/";
+    let basePath = pathname.replace(/^\/fr(?=\/|$)/, "") || "/";
+    if (basePath.startsWith("/wiki/") && nextLanguage === "fr") basePath = "/wiki";
+    if (basePath.startsWith("/wiki/") && nextLanguage === "en") basePath = "/wiki";
     router.push(nextLanguage === "fr" ? `/fr${basePath === "/" ? "" : basePath}` : basePath);
   };
 

@@ -1,22 +1,23 @@
-export const navigation = [
+export const navigation: { href?: string; label: string; disabled?: boolean }[] = [
   { href: "/products", label: "Products" },
   { href: "/network", label: "Network" },
   { href: "/principles", label: "Principles" },
-  { label: "Wiki", disabled: true },
+  { href: "/wiki", label: "Wiki" },
+  { label: "ROOT", disabled: true },
 ];
 
 export const services = [
   {
     code: "COMPUTE / 01",
     title: "Virtual private servers",
-    body: "Virtual machines hosted on our France-based infrastructure, with Germany-based IP addresses provided via tunnel.",
-    items: ["Dedicated virtual resources", "German IP via tunnel", "Human onboarding"],
+    body: "Proxmox virtual machines on our France-hosted infrastructure, with Germany-based IP addresses provided via tunnel.",
+    items: ["Proxmox virtualisation", "German IP via tunnel", "Monthly traffic by plan"],
   },
   {
     code: "STORAGE / 02",
     title: "Object storage",
-    body: "S3-compatible object storage for assets, backups, and application data — designed to sit alongside your compute.",
-    items: ["S3-compatible API", "Simple capacity pricing", "Built for application data"],
+    body: "MinIO-based, S3-compatible object storage for assets, backups, and application data — designed to sit alongside your compute.",
+    items: ["MinIO object storage", "S3-compatible API", "25 GB on NVMe M.2"],
   },
   {
     code: "NETWORK / 03",
@@ -27,8 +28,8 @@ export const services = [
 ];
 
 export const productCategories = [
-  { href: "/vps", number: "01", title: "Virtual private servers", description: "Ready-made VPS plans, images, and custom configurations.", detail: "Explore VPS", tags: ["recommended", "sale", "priceDrop"] },
-  { href: "/storage", number: "02", title: "Object storage", description: "S3-compatible capacity for assets and application data.", detail: "Explore storage", tags: ["sale", "priceDrop"] },
+  { href: "/vps", number: "01", title: "Virtual private servers", description: "Six Proxmox VPS plans, system images, and custom configurations.", detail: "Explore VPS", tags: ["recommended"] },
+  { href: "/storage", number: "02", title: "Object storage", description: "MinIO-based S3-compatible capacity for assets and application data.", detail: "Explore storage", tags: [] },
   { href: "/network", number: "03", title: "Network path", description: "France-hosted compute with German public IP via tunnel.", detail: "View architecture", tags: ["featured"] },
 ];
 
@@ -42,6 +43,7 @@ export const futureProductCategories = [
 // Use `danger` only for a real destructive or high-impact condition; use `warn` for a factual caveat.
 export const productTagCatalog = {
   sale: { label: "SAVE 60%", tone: "sale" },
+  sale80: { label: "SAVE 80%", tone: "sale" },
   off10: { label: "10% OFF", tone: "sale" },
   off25: { label: "25% OFF", tone: "sale" },
   off50: { label: "50% OFF", tone: "sale" },
@@ -51,6 +53,7 @@ export const productTagCatalog = {
   bestValue: { label: "BEST VALUE", tone: "success" },
   new: { label: "NEW", tone: "info" },
   featured: { label: "FEATURED", tone: "recommended" },
+  star: { label: "★ STAR", tone: "star" },
   beta: { label: "BETA", tone: "beta" },
   trial: { label: "TRIAL", tone: "info" },
   preorder: { label: "PRE-ORDER", tone: "beta" },
@@ -73,18 +76,26 @@ type Plan = {
   category: "vps" | "storage";
   name: string;
   price: string;
+  vatPercent?: number;
   wasPrice: string;
   period: string;
   description: string;
   specs: string[];
   tags: ProductTag[];
   highlighted?: boolean;
+  starred?: boolean;
 };
 
 export const plans: Plan[] = [
-  { category: "vps", name: "VPS Start", price: "€1.60", wasPrice: "€4", period: "/ month", description: "A compact virtual server for small services and personal projects.", specs: ["1 vCPU", "1 GB RAM", "25 GB NVMe storage", "German IPv4 via tunnel"], tags: ["sale", "priceDrop", "bestValue"] },
-  { category: "vps", name: "VPS Build", price: "€3.60", wasPrice: "€9", period: "/ month", description: "More room for applications, environments, and growing workloads.", specs: ["2 vCPU", "4 GB RAM", "80 GB NVMe storage", "German IPv4 via tunnel"], tags: ["sale", "priceDrop", "recommended"], highlighted: true },
-  { category: "storage", name: "Object Storage", price: "€2", wasPrice: "€5", period: "/ month", description: "S3-compatible storage, starting with a practical capacity allocation.", specs: ["250 GB included", "S3-compatible API", "Usage review on request", "Email support"], tags: ["sale", "priceDrop"] },
+  { category: "vps", name: "VPS Pulse", price: "€5.95", vatPercent: 20, wasPrice: "", period: "/ month", description: "A VPS configuration for applications and projects.", specs: ["2.75 vCPU (275%)", "9.5 GB RAM", "64 GB disk", "Proxmox · Intel Xeon E3-1275 v5 · DDR4 ECC", "HP EX950 NVMe · 1 TB monthly traffic", "German IPv4 via tunnel"], tags: ["star"], starred: true },
+  { category: "vps", name: "VPS One", price: "€4.80", vatPercent: 20, wasPrice: "", period: "/ month", description: "An entry point for small services and personal projects.", specs: ["0.5 vCPU (one core limited to 50%)", "1.5 GB RAM", "25 GB NVMe M.2 storage", "Proxmox · Intel Xeon E3-1275 v5 · DDR4 ECC", "HP EX950 NVMe · 750 GB monthly traffic", "German IPv4 via tunnel"], tags: [] },
+  { category: "vps", name: "VPS Neo", price: "€8.40", vatPercent: 20, wasPrice: "", period: "/ month", description: "More room for applications and development environments.", specs: ["1.5 vCPU (150% of one core)", "4.5 GB RAM", "50 GB NVMe M.2 storage", "Proxmox · Intel Xeon E3-1275 v5 · DDR4 ECC", "HP EX950 NVMe · 1 TB monthly traffic", "German IPv4 via tunnel"], tags: [] },
+  { category: "vps", name: "VPS X", price: "€16.80", vatPercent: 20, wasPrice: "", period: "/ month", description: "A mid-range configuration for growing applications.", specs: ["2.5 vCPU (250%)", "11.5 GB RAM", "100 GB NVMe M.2 storage", "Proxmox · Intel Xeon E3-1275 v5 · DDR4 ECC", "HP EX950 NVMe · 1.25 TB monthly traffic", "German IPv4 via tunnel"], tags: ["recommended"], highlighted: true },
+  { category: "vps", name: "VPS Pure", price: "€25.20", vatPercent: 20, wasPrice: "", period: "/ month", description: "More CPU, memory, and storage for heavier workloads.", specs: ["4 vCPU (400%)", "21.5 GB RAM", "200 GB NVMe M.2 storage", "Proxmox · Intel Xeon E3-1275 v5 · DDR4 ECC", "HP EX950 NVMe · 1.5 TB monthly traffic", "German IPv4 via tunnel"], tags: [] },
+  { category: "vps", name: "VPS Max", price: "€37.20", vatPercent: 20, wasPrice: "", period: "/ month", description: "The largest configuration in this VPS range.", specs: ["6.5 vCPU (650%)", "32.5 GB RAM", "300 GB NVMe M.2 storage", "Proxmox · Intel Xeon E3-1275 v5 · DDR4 ECC", "HP EX950 NVMe · 2 TB monthly traffic", "German IPv4 via tunnel"], tags: ["bestValue"] },
+  { category: "storage", name: "Object Storage 25 GB", price: "€1", wasPrice: "€5", period: "/ month", description: "MinIO-based, S3-compatible object storage on NVMe M.2.", specs: ["25 GB NVMe M.2 storage", "MinIO object storage", "S3-compatible API", "Email enquiry before provisioning"], tags: ["sale80", "recommended"] },
+  { category: "storage", name: "Object Storage 50 GB", price: "€10", wasPrice: "", period: "/ month", description: "MinIO-based, S3-compatible object storage on NVMe M.2.", specs: ["50 GB NVMe M.2 storage", "MinIO object storage", "S3-compatible API", "Email enquiry before provisioning"], tags: [] },
+  { category: "storage", name: "Object Storage 100 GB", price: "€20", wasPrice: "", period: "/ month", description: "MinIO-based, S3-compatible object storage on NVMe M.2.", specs: ["100 GB NVMe M.2 storage", "MinIO object storage", "S3-compatible API", "Email enquiry before provisioning"], tags: [] },
 ];
 
 export const operatingSystems = [
