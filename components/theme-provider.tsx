@@ -68,6 +68,7 @@ export function ThemeProvider({
   useEffect(() => {
     document.documentElement.classList.remove("dark", "light");
     document.documentElement.classList.add(theme);
+    document.querySelector('link[rel="icon"]')?.setAttribute("href", theme === "dark" ? "/assets/encrypteron-notext.png" : "/assets/encrypteron-notext-dark.png");
   }, [theme]);
 
   const setTheme = (nextTheme: Theme) => {

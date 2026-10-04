@@ -96,6 +96,7 @@ The browser cookies are `theme=dark|light`, `language=en|fr`, and `legal_notice_
 - The header language selector persists a language choice immediately and navigates to the corresponding route. Changing to a language whose legal notice has not been acknowledged opens the entry gate again.
 - `components/theme-provider.tsx` updates the document language after hydration; `app/fr/layout.tsx` marks the French route subtree with `lang="fr"` for server-rendered content.
 - A header-toggle choice persists a theme cookie preference.
+- The header/footer wordmark and browser icon use `encrypteron.png` / `encrypteron-notext.png` in dark theme and their `-dark.png` variants in light theme.
 - With no cookie, `components/theme-provider.tsx` also follows system theme changes.
 - Preserve the before-paint logic to prevent a color flash. Keep `data-scroll-behavior="smooth"` on the root `<html>` element because smooth scrolling is configured in `app/globals.css` and Next.js uses the attribute to manage route transitions.
 
@@ -125,7 +126,7 @@ Use semantic HTML, visible focus states, keyboard-operable controls, adequate co
 | `components/wiki-markdown.tsx`, `components/wiki-search.tsx` | Safe Wiki Markdown renderer with responsive step flows, contextual visual cards, and public index search/filter UI. |
 | `wiki/*.md` | Wiki architecture, security, data model, threat model, and verification guidance. |
 | `components/footer.tsx` | Brand signature and legal navigation. |
-| `assets/encrypteron.png`, `assets/encrypteron-notext.png` | Shared wordmark for the header/footer and square mark for the browser icon, served from `/assets/`. |
+| `assets/encrypteron.png`, `assets/encrypteron-dark.png`, `assets/encrypteron-notext.png`, `assets/encrypteron-notext-dark.png` | Theme-specific wordmarks for the header/footer and square browser icons, served from `/assets/`. |
 | `components/section-heading.tsx` | Reusable eyebrow/title/intro block. |
 | `components/theme-provider.tsx` | Theme state, system-theme fallback, legal acknowledgement entry gate, and cookie persistence. |
 | `components/plan-card.tsx` | Reusable tag-aware plan card. |

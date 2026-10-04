@@ -5,14 +5,14 @@ import Image from "next/image";
 import { useTheme } from "./theme-provider";
 
 export function Footer() {
-  const { language } = useTheme();
+  const { language, theme } = useTheme();
   const fr = language === "fr";
   const path = (href: string) => fr ? `/fr${href}` : href;
   return (
     <footer className="site-footer">
       <div className="signature">
         <p>{fr ? "Bien cordialement," : "Best regards,"}</p>
-        <p className="signature-brand"><Image src="/assets/encrypteron.png" alt="Encrypteron" width={2172} height={724} /></p>
+        <p className="signature-brand"><Image src={theme === "dark" ? "/assets/encrypteron.png" : "/assets/encrypteron-dark.png"} alt="Encrypteron" width={2172} height={724} /></p>
         <p className="signature-tagline">{fr ? "Une infrastructure exploitée en toute clarté." : "Infrastructure, clearly operated."}</p>
         <div className="pink-rule" />
         <a href="mailto:mail@encrypteron.com">mail@encrypteron.com</a>
