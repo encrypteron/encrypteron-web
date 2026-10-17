@@ -3,6 +3,7 @@ import { LegalPage } from "@/app/legal-page";
 export default function FrenchTermsPage() {
   return <LegalPage label="Juridique / 02" title="Conditions d’utilisation">
     <p><strong>Projet de conditions pour Encrypteron.</strong> Elles encadrent l’utilisation de ce site d’information. Elles ne constituent ni une commande, ni un devis, ni un accord de niveau de service, ni une garantie de disponibilité. Complétez les informations signalées et faites vérifier ces conditions au regard du droit applicable avant toute vente.</p>
+    <p>Encrypteron est un projet personnel basé en France, avant création d’entreprise. Les VPS et le stockage objet sont en préparation ; aucune commande de service n’est acceptée actuellement. ROOT et son support par tickets sont des fonctions prévues.</p>
     <h2>Éditeur du site</h2>
     <p>Le site est exploité par [INFORMATION À COMPLÉTER : dénomination sociale, forme juridique, adresse du siège, pays et numéro d’immatriculation ; ajouter le numéro de TVA le cas échéant]. Contact : <a href="mailto:mail@encrypteron.com">mail@encrypteron.com</a>.</p>
     <h2>Informations et demandes</h2>

@@ -1,3 +1,4 @@
+import { launchNotice } from "@/app/content";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { SectionHeading } from "@/components/section-heading";
@@ -12,7 +13,7 @@ export default function NetworkPage() {
           <div>
             <p className="eyebrow"><span className="pink-dot" /> Network architecture</p>
             <h1>France-hosted compute. <em>German public IP.</em></h1>
-            <p>VPS compute runs on our infrastructure in France. Its public traffic is presented through a Germany-based IP address via a tunnel path.</p>
+            <p>{launchNotice}</p>
           </div>
         </section>
 
@@ -21,12 +22,13 @@ export default function NetworkPage() {
           <div className="network-diagram" aria-label="Client traffic travels to a German public IP, then through a tunnel to France-hosted compute and the VPS">
             <article><span className="diagram-number">01</span><strong>Client</strong><small>A visitor, application, or service connects to your VPS public IP.</small></article>
             <i className="diagram-link" aria-hidden="true">→</i>
-            <article className="german-node"><span className="diagram-number">02</span><strong>German public IP</strong><small>The connection reaches the IP address assigned to your VPS in Germany.</small></article>
+            <article className="german-node"><span className="diagram-number">02</span><strong>German public IP</strong><small>The connection reaches a German public IPv4: shared by default, or dedicated as an option.</small></article>
             <i className="diagram-link" aria-hidden="true">→</i>
             <article className="tunnel-node"><span className="diagram-number">03</span><strong>Tunnel path</strong><small>Traffic continues through the tunnel between the German IP path and France-hosted compute.</small></article>
             <i className="diagram-link" aria-hidden="true">→</i>
             <article><span className="diagram-number">04</span><strong>Your VPS in France</strong><small>The workload runs on the France-hosted infrastructure.</small></article>
           </div>
+          <p className="section-note">The planned VPS prices include shared IPv4 with assigned ports. Dedicated IPv4 is an optional extra; see the <a href="/vps">VPS plans, speeds, and port limits</a>. IPv6 is not available at this stage.</p>
           <div className="return-path"><span>RETURN PATH</span><p>Responses take the reverse route: VPS in France → tunnel path → German public IP → client. The service therefore presents the Germany-based IP to the public internet.</p></div>
         </section>
 

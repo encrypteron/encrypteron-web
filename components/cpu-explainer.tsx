@@ -33,11 +33,14 @@ export function CpuExplainer({ language = "en" }: { language?: "en" | "fr" }) {
             <div><strong>{format.format(limitPercent)} %</strong><span>{fr ? "limite CPU totale" : "total CPU limit"}</span></div>
           </div>
           <p>{fr
-            ? `Le système voit ${visibleCores} cœurs virtuels, mais la VM est limitée à ${format.format(limitPercent)} % de temps CPU au total : l’équivalent de ${format.format(max.quota)} cœurs utilisés à 100 %.`
-            : `The system sees ${visibleCores} virtual cores, but the VM is limited to ${format.format(limitPercent)}% total CPU time: the equivalent of ${format.format(max.quota)} cores used at 100%.`}</p>
+            ? `Le système voit ${visibleCores} cœurs virtuels. La VM dispose d’un plafond total de ${format.format(limitPercent)} % de temps CPU, où 100 % correspond au temps d’un processeur logique.`
+            : `The system sees ${visibleCores} virtual cores. The VM has a total CPU-time cap of ${format.format(limitPercent)}%, where 100% corresponds to the time of one logical processor.`}</p>
           <p>{fr
             ? "Le plafond concerne l’ensemble du VPS ; chaque cœur visible n’est pas limité séparément à un pourcentage fixe."
             : "The cap applies to the whole VPS; each visible core is not separately limited to a fixed percentage."}</p>
+          <p>{fr
+            ? "Ce quota ne constitue ni une réservation de cœurs physiques ni une garantie de performance. Les performances dépendent notamment du processeur hôte et de sa charge."
+            : "This quota is neither a reservation of physical cores nor a performance guarantee. Performance depends on factors including the host processor and its load."}</p>
         </article>
         <div className="cpu-explainer-table-wrap">
           <table className="cpu-explainer-table">

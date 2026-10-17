@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { navigation } from "@/app/content";
 import { useState } from "react";
 import { useTheme } from "./theme-provider";
+import { BrandLogo } from "./brand-logo";
 
 export function Header() {
   const { theme, setTheme, language, setLanguage } = useTheme();
@@ -15,7 +15,7 @@ export function Header() {
   const labels: Record<string, string> = { Products: t.products, Network: t.network, Principles: t.principles, Wiki: t.wiki };
   return (
     <header className="site-header">
-      <Link href={path("/")} className="brand" aria-label="Encrypteron"><Image src={theme === "dark" ? "/assets/encrypteron.png" : "/assets/encrypteron-dark.png"} alt="Encrypteron" width={2172} height={724} priority /></Link>
+      <Link href={path("/")} className="brand" aria-label="Encrypteron"><BrandLogo priority /></Link>
       <nav aria-label={language === "fr" ? "Navigation principale" : "Main navigation"}>
         {navigation.map((item) => item.disabled
           ? <span className="nav-coming-soon" aria-disabled="true" key={item.label}>{item.label}<small>{t.soon}</small></span>

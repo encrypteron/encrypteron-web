@@ -4,6 +4,8 @@ export default function TermsPage() {
   return <LegalPage label="Legal / 02" title="Terms of use">
     <p><strong>Draft for Encrypteron.</strong> These terms cover use of this informational website. They are not a service order, price quote, service-level agreement, or guarantee that a service is available. Complete the marked seller details and obtain jurisdiction-specific review before using them for commercial contracting.</p>
 
+    <p>Encrypteron is a personal project based in France, before business formation. VPS and Object Storage are in preparation; no service orders are currently accepted. ROOT and its ticket support are planned features.</p>
+
     <h2>Who operates the website</h2>
     <p>It is operated by [LEGAL BLOCKER: insert the provider’s registered legal name, legal form, registered address, country, and company or registration number; include VAT details where applicable]. Contact: <a href="mailto:mail@encrypteron.com">mail@encrypteron.com</a>.</p>
 

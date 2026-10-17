@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Encrypteron — Infrastructure, clearly operated",
-  description: "Security-minded VPS, object storage, and tunnelled network infrastructure.",
+  description: "Encrypteron is a personal project in France preparing VPS and Object Storage services. Services are not available yet.",
   icons: { icon: "/assets/encrypteron-notext.png" },
 };
 
